@@ -18,6 +18,7 @@ window.onload = function() {
                 catImage.alt = "Random cat image";
                 catImage.width = 300; 
                 factElement.appendChild(catImage);
+                sessionStorage.setItem("catFact", fact.text);
             })
             .catch(err => {
                 console.error(err.message);
@@ -28,6 +29,22 @@ window.onload = function() {
         });
     };
     
-    document.getElementById("getButton").addEventListener("click", getFact);
-};
-
+    function clickCounter(event) {
+        if (typeof Storage !== "undefined") {
+            let count = localStorage.getItem("clickcount");
+            if (count) {
+                localStorage.setItem("clickcount", Number(count) + 1);
+            } else {
+                localStorage.setItem("clickcount", 1);
+            }
+            document.getElementById("clicked").innerHTML = `You have received ${localStorage.getItem("clickcount")} cat facts!`;
+        } else {
+            document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+        }
+    }
+    
+    document.getElementById("getButton").addEventListener("click", function(event) {
+        getFact();
+        clickCounter(event);
+    });
+}    
